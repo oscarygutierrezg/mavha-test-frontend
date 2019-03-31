@@ -1,0 +1,64 @@
+<div class="mat-elevation-z8">
+
+<mat-form-field>
+  <mat-label>Filtrar por ID</mat-label>
+  <mat-select  [(ngModel)]="todoFilter.id" (selectionChange)="filtrar()">
+    <mat-option *ngFor="let id of ids" [value]="id">
+      {{id}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+<mat-form-field>
+  <input matInput [(ngModel)]="todoFilter.descripcion" (keyup)="filtrar()" placeholder="Filtrar por Descripción">
+</mat-form-field>
+<mat-form-field>
+  <mat-label>Filtrar por Estado</mat-label>
+  <mat-select  [(ngModel)]="todoFilter.estado" (selectionChange)="filtrar()">
+    <mat-option value="pendiente">
+      Pendiente
+    </mat-option>
+        <mat-option value="resuelta">
+      Resuelta
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+
+  <table mat-table [dataSource]="dataSource">
+
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef> ID. </th>
+      <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="descripcion">
+      <th mat-header-cell *matHeaderCellDef> Descripción </th>
+      <td mat-cell *matCellDef="let element"> {{element.descripcion}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="estado">
+      <th mat-header-cell *matHeaderCellDef> Estado </th>
+      <td mat-cell *matCellDef="let element"> {{element.estado}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="foto">
+      <th mat-header-cell *matHeaderCellDef> Foto </th>
+      <td mat-cell *matCellDef="let element">
+        <img  (click)="onViewImagen(element.foto)"  src="data:image/png;base64,{{element.foto}}" class="img-responsive custom-img-width" alt="Cinque Terre">
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="cambio">
+      <th mat-header-cell *matHeaderCellDef> Acción </th>
+      <td mat-cell *matCellDef="let element">
+       <a (click)="cambiarEstado(element)" >  Cambiar Estado </a>
+      </td>
+    </ng-container>
+
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>

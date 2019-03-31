@@ -1,0 +1,66 @@
+<div class="container">
+
+  <h1>Formulario Todo</h1>
+
+  <form [formGroup]="todoForm" #formDir="ngForm">
+
+    <div [hidden]="formDir.submitted">
+
+      <div class="cross-validation"
+        [class.cross-validation-error]="todoForm.errors?.identityRevealed && (todoForm.touched || todoForm.dirty)">
+        <div class="form-group">
+
+          <label for="descripcion">Descripción</label>
+          <input [(ngModel)]="todo.descripcion" id="descripcion" class="form-control" formControlName="descripcion"
+            required>
+
+          <div *ngIf="descripcion.invalid && (descripcion.dirty || descripcion.touched)" class="alert alert-danger">
+
+            <div *ngIf="descripcion.errors.required">
+              Descripción es requerida.
+            </div>
+            <div *ngIf="descripcion.errors.minlength">
+              Descripción debe tener al menos 10 caracteres de largo.
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="estado">Estado</label>
+          <select [(ngModel)]="todo.estado" id="estado" class="form-control" formControlName="estado" required>
+            <option *ngFor="let p of estados" [value]="p">{{p}}</option>
+          </select>
+
+          <div *ngIf="estado.invalid && estado.touched" class="alert alert-danger">
+            <div *ngIf="estado.errors.required">Estado es requerido.</div>
+          </div>
+        </div>
+
+
+        <div class="form-group">
+          <label for="foto">Foto</label>
+          <input #myInput formControlName="foto" required type="file" id="foto" (change)="handleFileInput($event)">
+        </div>
+
+      </div>
+      <div class="btn-toolbar" role="toolbar">
+        <div class="btn-group" role="group">
+          <button type="button" class="btn btn-primary" [disabled]="todoForm.invalid"
+            (click)="guardar()">Guardar</button>
+        </div>
+        <div class="btn-group" role="group">
+          <button type="button" class="btn btn-danger" (click)="formDir.resetForm({})">Cancelar</button>
+        </div>
+
+         <div class="btn-group" role="group">
+          <button type="button" class="btn btn-secondary" (click)="goHome()">Ir al Home</button>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <div class="submitted-message" *ngIf="formDir.submitted">
+    <p>You've submitted your todo, {{ todoForm.value.name }}!</p>
+    <button (click)="formDir.resetForm({})">Add new todo</button>
+  </div>
+</div>
